@@ -1,0 +1,172 @@
+<section class="resume-section" id="search">
+    <div class="resume-section-content">
+      <h2 class="mb-2">Search</h2>
+
+      <div class="input-group">
+        <div class="form-outline">
+          <input type="search" id="form1" #searchValue class="form-control form-control-lg" />
+        </div>
+        <button *ngIf="!isLoading" type="button" class="btn btn-primary" (click)="search(searchValue.value)">
+          <i class="fas fa-search"></i>
+        </button>
+        <button *ngIf="isLoading" class="btn btn-primary" type="button" disabled>
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Loading...
+        </button>
+      </div>
+      <div *ngIf="isExceptionThrown" class="alert alert-danger" role="alert">
+        {{errorMessage}}
+      </div>
+      <h4 class="mt-4 mb-2"><i><u>Joke</u></i></h4>
+      <table class="table table-striped" datatable [dtOptions]="dtOptions[0]" [dtTrigger]="dtTrigger[0]" style="width:100%">
+          <thead>
+              <tr>
+                  <th>Joke</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor = "let joke of jokes">
+                  <td>{{joke.value}}</td>
+              </tr>
+          </tbody>
+      </table>
+
+      <br>
+      <h4 class="mt-4 mb-2"><i><u>People</u></i></h4>
+      <table class="table table-striped" datatable [dtOptions]="dtOptions[1]" [dtTrigger]="dtTrigger[1]" style="width:100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Height</th>
+                <th>Mass</th>
+                <th>Hair Color</th>
+                <th>Skin Color</th>
+                <th>Eye Color</th>
+                <th>Gender</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor = "let person of people">
+                <td>{{person.name}}</td>
+                <td>{{person.height}}</td>
+                <td>{{person.mass}}</td>
+                <td>{{person.hair_color}}</td>
+                <td>{{person.skin_color}}</td>
+                <td>{{person.eye_color}}</td>
+                <td>{{person.gender}}</td>
+                <td><a href="#" data-bs-toggle="modal" data-bs-target="#personSearchModal" (click)="getPerson(person)">View full Profile</a> &nbsp; <i class="fa-solid fa-file-lines"></i> </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+  </section>
+
+  <!-- Person Modal -->
+  <div class="modal fade" id="personSearchModal" tabindex="-1" aria-labelledby="personSearchModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="personSearchModalLabel">{{person.name}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3 row">
+            <label for="staticName" class="col-sm-2 col-form-label">Name</label>
+            <div class="col-sm-10">
+              <input type="text" id="staticName" readonly class="form-control-plaintext" [value]="person.name">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="staticHeight" class="col-sm-2 col-form-label">Height</label>
+            <div class="col-sm-10">
+              <input type="text" id="staticHeight" readonly class="form-control-plaintext" [value]="person.height">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="staticMass" class="col-sm-2 col-form-label">Mass</label>
+            <div class="col-sm-10">
+              <input type="text" id="staticMass" readonly class="form-control-plaintext" [value]="person.mass">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="staticHairColor" class="col-sm-2 col-form-label">Hair Color</label>
+            <div class="col-sm-10">
+              <input type="text" id="staticHairColor" readonly class="form-control-plaintext" [value]="person.hair_color">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="staticSkinColor" class="col-sm-2 col-form-label">Skin Color</label>
+            <div class="col-sm-10">
+              <input type="text" id="staticSkinColor" readonly class="form-control-plaintext" [value]="person.skin_color">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="staticEyeColor" class="col-sm-2 col-form-label">Eye Color</label>
+            <div class="col-sm-10">
+              <input type="text" id="staticEyeColor" readonly class="form-control-plaintext" [value]="person.eye_color">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="staticBirthYear" class="col-sm-2 col-form-label">Birth Year</label>
+            <div class="col-sm-10">
+              <input type="text" id="staticBirthYear" readonly class="form-control-plaintext" [value]="person.birth_year">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="staticGender" class="col-sm-2 col-form-label">Gender</label>
+            <div class="col-sm-10">
+              <input type="text" id="staticGender" readonly class="form-control-plaintext" [value]="person.gender">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="staticHomeworld" class="col-sm-2 col-form-label">Home World</label>
+            <div class="col-sm-10">
+              <li class="list-group-item"><a [href]="person.homeworld">{{person.homeworld}}</a></li>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="staticFilms" class="col-sm-2 col-form-label">Films</label>
+            <div class="col-sm-10">
+              <ul class="list-group" id="staticFilms">
+                <li class="list-group-item" *ngFor = "let film of person.films" ><a [href]="film">{{film}}</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="staticSpecies" class="col-sm-2 col-form-label">Species</label>
+            <div class="col-sm-10">
+              <ul class="list-group" id="staticSpecies">
+                <li class="list-group-item" *ngFor = "let specie of person.species" ><a [href]="specie">{{specie}}</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="staticVechicles" class="col-sm-2 col-form-label">Vehicles</label>
+            <div class="col-sm-10">
+              <ul class="list-group" id="staticVechicles">
+                <li class="list-group-item" *ngFor = "let vehicle of person.vehicles" ><a [href]="vehicle">{{vehicle}}</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="staticStarships" class="col-sm-2 col-form-label">Starships</label>
+            <div class="col-sm-10">
+              <ul class="list-group" id="staticStarships">
+                <li class="list-group-item" *ngFor = "let starship of person.starships" ><a [href]="starship">{{starship}}</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="staticURL" class="col-sm-2 col-form-label">URL</label>
+            <div class="col-sm-10">
+              <li class="list-group-item"><a [href]="person.url">{{person.url}}</a></li>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

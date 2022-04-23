@@ -1,0 +1,48 @@
+<section class="resume-section" id="joke">
+    <div class="resume-section-content">
+      <div *ngIf="isLoading">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Loading...
+      </div>
+      <div *ngIf="isExceptionThrown" class="alert alert-danger" role="alert">
+        {{errorMessage}}
+      </div>
+      <h2 class="mb-5">Joke</h2>
+      <table class="display table table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" style="width:100%">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor = "let category of categories">
+                <td>{{category}}</td>
+                <td><a href="#" data-bs-toggle="modal" data-bs-target="#jokeModal" (click)="getRandomJoke(category)">View random joke</a> &nbsp; <i class="fa-solid fa-file-lines"></i> </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+  </section>
+
+<!-- Joke Modal -->
+<div class="modal fade" id="jokeModal" tabindex="-1" aria-labelledby="jokeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="jokeModalLabel">Random Joke</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="isLoading">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Loading...
+          </div>
+          <strong *ngIf="!isLoading">{{joke.value}}</strong>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
